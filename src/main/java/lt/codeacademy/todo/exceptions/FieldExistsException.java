@@ -1,10 +1,10 @@
 package lt.codeacademy.todo.exceptions;
 
-public class FieldNotFoundException extends RuntimeException{
+public class FieldExistsException extends RuntimeException{
 
     private final String field;
 
-    public FieldNotFoundException(String message, String field) {
+    public FieldExistsException(String message, String field) {
         super(message);
         this.field = field;
     }
