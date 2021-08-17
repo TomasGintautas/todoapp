@@ -5,6 +5,7 @@ import lt.codeacademy.todo.exceptions.FieldExistsException;
 import lt.codeacademy.todo.exceptions.FieldNotFoundException;
 import lt.codeacademy.todo.repositories.RoleRepository;
 import lt.codeacademy.todo.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ public class UserService implements UserDetailsService {
 
     private final PasswordEncoder encoder;
 
+    @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -56,6 +58,5 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws FieldNotFoundException {
         return userRepository.findUserByUsername(username).orElseThrow(() -> new FieldNotFoundException("User not found: ", username));
-
     }
 }
