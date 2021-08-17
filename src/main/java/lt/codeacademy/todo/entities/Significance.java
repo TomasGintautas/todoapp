@@ -1,21 +1,23 @@
 package lt.codeacademy.todo.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
+@Entity
+@Table(name = "significance")
 @NoArgsConstructor
 public class Significance {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @OneToMany(mappedBy = "significance")
     private List<ToDo> todo;
 }

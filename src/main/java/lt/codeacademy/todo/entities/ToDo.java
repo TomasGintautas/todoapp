@@ -1,25 +1,47 @@
 package lt.codeacademy.todo.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
+@Entity
+@Table(name = "todo")
 @NoArgsConstructor
 public class ToDo {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "text")
     private String toDoText;
 
-    private LocalDateTime dateCreated;
+    @CreationTimestamp
+    @Column(name = "created")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime created;
 
+    @UpdateTimestamp
+    @Column(name = "updated")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updated;
+
+    @Column(name = "deadline")
+    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
     private LocalDateTime deadline;
 
+    @ManyToOne
+    @JoinColumn(name = "significance_id")
     private Significance significance;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id")
+    private User owner;
 }
