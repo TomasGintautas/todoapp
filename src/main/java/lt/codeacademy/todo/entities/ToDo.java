@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "todo")
+@Table(name = "to_do")
 @NoArgsConstructor
 public class ToDo {
 
@@ -41,7 +41,6 @@ public class ToDo {
     private Significance significance;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User owner;
 }
