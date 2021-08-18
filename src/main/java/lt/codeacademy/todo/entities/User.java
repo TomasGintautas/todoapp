@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lt.codeacademy.todo.entities.dto.requests.RegisterRequest;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -60,6 +61,14 @@ public class User implements UserDetails {
     @Column(name = "updated")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updated;
+
+    public User(RegisterRequest registerRequest) {
+        this.username = registerRequest.getUsername();
+        this.password = registerRequest.getPassword();
+        this.firstName = registerRequest.getFirstName();
+        this.lastName = registerRequest.getLastName();
+        this.age = registerRequest.getAge();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
