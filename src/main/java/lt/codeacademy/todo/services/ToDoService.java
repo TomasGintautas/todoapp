@@ -2,7 +2,6 @@ package lt.codeacademy.todo.services;
 
 import lt.codeacademy.todo.entities.ToDo;
 import lt.codeacademy.todo.exceptions.FieldNotFoundException;
-import lt.codeacademy.todo.repositories.SignificanceRepository;
 import lt.codeacademy.todo.repositories.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,17 +15,11 @@ import java.util.stream.Collectors;
 @Service
 public class ToDoService {
 
-    private final UserService userService;
-
     private final ToDoRepository toDoRepository;
 
-    private final SignificanceRepository significanceRepository;
-
     @Autowired
-    public ToDoService(UserService userService, ToDoRepository toDoRepository, SignificanceRepository significanceRepository) {
-        this.userService = userService;
+    public ToDoService(ToDoRepository toDoRepository) {
         this.toDoRepository = toDoRepository;
-        this.significanceRepository = significanceRepository;
     }
 
     @Transactional
