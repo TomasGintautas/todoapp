@@ -10,5 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ToDoRepository extends JpaRepository<ToDo, Long> {
 
-    Optional <List<ToDo>> getAllByOwner(Long owner_id);
+    Optional<List<ToDo>> getAllByOwner(Long ownerId);
+
+    ToDo getById(Long id);
 }
