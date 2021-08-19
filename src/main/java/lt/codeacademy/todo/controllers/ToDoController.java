@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/workspace")
@@ -45,4 +46,25 @@ public class ToDoController {
         return toDoService.updateToDo(toDoRequest, id);
     }
 
+    @ApiOperation(value = "Get all to-dos", tags = "getToDoList", httpMethod = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully get list of to-dos"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
+    @GetMapping
+    @PreAuthorize("hasRole('USER')")
+    public List<ToDoResponse> getAllUserToDo(@PathVariable("id") Long id){
+        return toDoService.getToDoList(id);
+    }
+
+    @ApiOperation(value = "Get all to do today", tags = "getToDoToday", httpMethod = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully get list of to-dos today"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
+    @GetMapping("/today")
+    @PreAuthorize("hasRole('USER')")
+    public List<ToDoResponse> getToDoToday(@PathVariable("id") Long id){
+        return toDoService.getToDoListByDateToday(id);
+    }
 }

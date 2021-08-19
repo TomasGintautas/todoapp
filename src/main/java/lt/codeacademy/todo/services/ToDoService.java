@@ -31,8 +31,11 @@ public class ToDoService {
     }
 
     @Transactional
-    public List<ToDo> getToDoList(Long userId) {
-        return toDoRepository.getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()));
+    public List<ToDoResponse> getToDoList(Long userId) {
+        return toDoRepository.getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
+                .stream()
+                .map(todo -> new ToDoResponse(todo))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -45,12 +48,13 @@ public class ToDoService {
     }
 
     @Transactional
-    public List<ToDo> getToDoListByDateToday(Long userId) {
+    public List<ToDoResponse> getToDoListByDateToday(Long userId) {
         LocalDate dateToday = LocalDate.now();
         return toDoRepository
                 .getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
                 .stream()
                 .filter(toDoToday -> toDoToday.getDeadline().toString().substring(0, 10).replace(" ", "-").equals(dateToday.toString()))
+                .map(ToDoResponse::new)
                 .collect(Collectors.toList());
     }
 
