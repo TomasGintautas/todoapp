@@ -7,6 +7,7 @@ import lt.codeacademy.todo.entities.dto.responses.LoginResponse;
 import lt.codeacademy.todo.security.JwtService;
 import lt.codeacademy.todo.services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +35,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO register(@Valid @RequestBody RegisterRequest registerRequest) {
         return new UserDTO(userService.createUser(new User(registerRequest)));
+    }
+
+    //TODO: possibly wont be needed, take user info from principal
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') || principal.id == #id")
+    public User getUser(@PathVariable("id") Long id) {
+        return userService.getUser(id);
     }
 }

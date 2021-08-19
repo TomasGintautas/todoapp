@@ -30,6 +30,7 @@ public class UserService implements UserDetailsService {
         this.encoder = encoder;
     }
 
+    //TODO: probably wont be needed also
     public List<User> getUsers() {
         return userRepository.findAll();
     }
@@ -49,6 +50,7 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    //TODO: probably wont be needed if - deletion from db only
     public void deleteUser(Long id) {
         if (getUser(id) != null) {
             userRepository.deleteById(id);

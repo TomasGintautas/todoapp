@@ -3,6 +3,7 @@ package lt.codeacademy.todo.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import lt.codeacademy.todo.entities.dto.requests.ToDoRequest;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -43,4 +44,11 @@ public class ToDo {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
+
+    public ToDo(ToDoRequest toDoRequest, Significance significance, User user) {
+        this.toDoText = toDoRequest.getToDoText();
+        this.deadline = toDoRequest.getDeadline();
+        this.significance = significance;
+        this.owner = user;
+    }
 }

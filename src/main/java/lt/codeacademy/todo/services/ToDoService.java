@@ -1,8 +1,12 @@
 package lt.codeacademy.todo.services;
 
 import lt.codeacademy.todo.entities.ToDo;
+import lt.codeacademy.todo.entities.dto.requests.ToDoRequest;
+import lt.codeacademy.todo.entities.dto.responses.ToDoResponse;
 import lt.codeacademy.todo.exceptions.FieldNotFoundException;
+import lt.codeacademy.todo.repositories.SignificanceRepository;
 import lt.codeacademy.todo.repositories.ToDoRepository;
+import lt.codeacademy.todo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +20,23 @@ import java.util.stream.Collectors;
 public class ToDoService {
 
     private final ToDoRepository toDoRepository;
+    private final SignificanceRepository significanceRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ToDoService(ToDoRepository toDoRepository) {
+    public ToDoService(ToDoRepository toDoRepository, SignificanceRepository significanceRepository, UserRepository userRepository) {
         this.toDoRepository = toDoRepository;
+        this.significanceRepository = significanceRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
-    public List<ToDo> getToDoList(Long userId){
+    public List<ToDo> getToDoList(Long userId) {
         return toDoRepository.getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()));
     }
 
     @Transactional
-    public List<ToDo> getToDoListBySignificance(Long userId, Long significanceId){
+    public List<ToDo> getToDoListBySignificance(Long userId, Long significanceId) {
         return toDoRepository
                 .getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
                 .stream()
@@ -37,18 +45,21 @@ public class ToDoService {
     }
 
     @Transactional
-    public List<ToDo> getToDoListByDateToday(Long userId){
+    public List<ToDo> getToDoListByDateToday(Long userId) {
         LocalDate dateToday = LocalDate.now();
         return toDoRepository
                 .getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
                 .stream()
-                .filter(toDoToday -> toDoToday.getDeadline().toString().substring(0,10).replace(" ","-").equals(dateToday.toString()))
+                .filter(toDoToday -> toDoToday.getDeadline().toString().substring(0, 10).replace(" ", "-").equals(dateToday.toString()))
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public ToDo createToDo(ToDo todo){
-        return toDoRepository.save(todo);
+    public ToDoResponse createToDo(ToDoRequest toDoRequest) {
+        return new ToDoResponse(toDoRepository.save(new ToDo(
+                toDoRequest,
+                significanceRepository.findSignificanceByName(toDoRequest.getSignificance()),
+                userRepository.getById(toDoRequest.getOwnerId()))));
     }
 
     @Transactional
@@ -59,12 +70,12 @@ public class ToDoService {
     }
 
     @Transactional
-    public void deleteToDo(Long id){
+    public void deleteToDo(Long id) {
         toDoRepository.deleteById(id);
     }
 
     @Transactional
-    public void deleteOldToDo(Long id){
+    public void deleteOldToDo(Long id) {
         toDoRepository
                 .getAllByOwner(id).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", id.toString()))
                 .stream()
