@@ -83,7 +83,8 @@ public class ToDoService {
 
     @Transactional
     public void deleteToDo(Long id) {
-        toDoRepository.deleteById(id);}
+        toDoRepository.deleteById(id);
+    }
 
     @Transactional
     public void deleteOldToDo(Long id) {

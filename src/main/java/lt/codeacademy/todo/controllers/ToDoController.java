@@ -78,4 +78,30 @@ public class ToDoController {
     public List<ToDoResponse> getToDoBySignificance(@PathVariable("significance") String significance, @PathVariable("id") Long id){
         return toDoService.getToDoListBySignificance(id, significance);
     }
+
+    @ApiOperation(value = "Delete todo by id", tags = "getToDo", httpMethod = "DELETE")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Successfully delete todo by id"),
+            @ApiResponse(code = 404, message = "ToDo not found error"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('USER')")
+    public void deleteToDo(@PathVariable("id") Long id){
+        toDoService.deleteToDo(id);
+    }
+
+    @ApiOperation(value = "Delete todos past deadline", tags = "getToDo", httpMethod = "DELETE")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Successfully deleted old todos"),
+            @ApiResponse(code = 404, message = "ToDos not found error"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('USER')")
+    public void deleteOldToDo(@PathVariable("id") Long id){
+        toDoService.deleteOldToDo(id);
+    }
 }
