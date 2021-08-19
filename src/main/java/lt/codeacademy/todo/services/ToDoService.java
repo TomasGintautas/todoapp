@@ -63,16 +63,22 @@ public class ToDoService {
     }
 
     @Transactional
-    public ToDo updateToDo(ToDo updateToDo) {
-        ToDo toDo = toDoRepository.getById(updateToDo.getId());
-        updateToDo.setCreated(toDo.getCreated());
-        return toDoRepository.save(updateToDo);
+    public ToDoResponse updateToDo(ToDoRequest updateToDoRequest, Long id) {
+        ToDo toDo = toDoRepository.getById(id);
+        toDo.setSignificance(significanceRepository.findSignificanceByName(updateToDoRequest.getSignificance()));
+        toDo.setToDoText(updateToDoRequest.getToDoText());
+        toDo.setDeadline(updateToDoRequest.getDeadline());
+        toDo.setUpdated(LocalDateTime.now());
+
+        return new ToDoResponse(toDoRepository.save(new ToDo(
+                updateToDoRequest,
+                significanceRepository.findSignificanceByName( updateToDoRequest.getSignificance()),
+                userRepository.getById(updateToDoRequest.getOwnerId()))));
     }
 
     @Transactional
     public void deleteToDo(Long id) {
-        toDoRepository.deleteById(id);
-    }
+        toDoRepository.deleteById(id);}
 
     @Transactional
     public void deleteOldToDo(Long id) {
