@@ -1,7 +1,6 @@
 package lt.codeacademy.todo.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lt.codeacademy.todo.entities.dto.requests.ToDoRequest;
 import org.hibernate.annotations.CreationTimestamp;
