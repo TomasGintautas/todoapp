@@ -39,11 +39,12 @@ public class ToDoService {
     }
 
     @Transactional
-    public List<ToDo> getToDoListBySignificance(Long userId, Long significanceId) {
+    public List<ToDoResponse> getToDoListBySignificance(Long userId, String significance) {
         return toDoRepository
                 .getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
                 .stream()
-                .filter(significance -> significance.getSignificance().getId().equals(significanceId))
+                .filter(toDo -> toDo.getSignificance().getName().equals(significance))
+                .map(ToDoResponse::new)
                 .collect(Collectors.toList());
     }
 

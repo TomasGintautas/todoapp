@@ -67,4 +67,15 @@ public class ToDoController {
     public List<ToDoResponse> getToDoToday(@PathVariable("id") Long id){
         return toDoService.getToDoListByDateToday(id);
     }
+
+    @ApiOperation(value = "Get all to do by significance", tags = "getToDoBySignificance", httpMethod = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully get list of to-dos by required significance"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
+    @GetMapping("/{significance}")
+    @PreAuthorize("hasRole('USER')")
+    public List<ToDoResponse> getToDoBySignificance(@PathVariable("significance") String significance, @PathVariable("id") Long id){
+        return toDoService.getToDoListBySignificance(id, significance);
+    }
 }
