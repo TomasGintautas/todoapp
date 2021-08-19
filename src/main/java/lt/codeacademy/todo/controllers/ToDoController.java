@@ -98,7 +98,7 @@ public class ToDoController {
             @ApiResponse(code = 404, message = "ToDos not found error"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('USER')")
     public void deleteOldToDo(@PathVariable("id") Long id){
