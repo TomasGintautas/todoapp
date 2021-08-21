@@ -39,7 +39,7 @@ CREATE TABLE significance
 
 CREATE TABLE to_do
 (
-    id                  BIGSERIAL           NOT NULL PRIMARY KEY,
+    id                  BIGSERIAL           PRIMARY KEY NOT NULL,
     text                VARCHAR(255)        NOT NULL,
     created             TIMESTAMP           NOT NULL DEFAULT NOW(),
     updated             TIMESTAMP           NOT NULL DEFAULT NOW(),

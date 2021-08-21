@@ -22,19 +22,11 @@ public class ToDoResponse {
     @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
     private LocalDateTime deadline;
 
-    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
-    private LocalDateTime created;
-
-    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
-    private LocalDateTime updated;
-
     public ToDoResponse(ToDo toDo) {
         this.id = toDo.getId();
         this.ownerId = toDo.getOwner().getId();
         this.toDoText = toDo.getToDoText();
         this.significance = toDo.getSignificance().getName();
         this.deadline = toDo.getDeadline() ;
-        this.created = toDo.getCreated();
-        this.updated = toDo.getUpdated();
     }
 }

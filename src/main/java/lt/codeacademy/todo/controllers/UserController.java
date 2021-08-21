@@ -6,6 +6,7 @@ import lt.codeacademy.todo.entities.dto.requests.RegisterRequest;
 import lt.codeacademy.todo.entities.dto.responses.LoginResponse;
 import lt.codeacademy.todo.security.JwtService;
 import lt.codeacademy.todo.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,14 +18,11 @@ import javax.validation.Valid;
 @RequestMapping
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    private final JwtService jwtService;
-
-    public UserController(UserService userService, JwtService jwtService) {
-        this.userService = userService;
-        this.jwtService = jwtService;
-    }
+    @Autowired
+    private JwtService jwtService;
 
     @PostMapping("/login")
     public LoginResponse login(@AuthenticationPrincipal User user) {
@@ -38,7 +36,7 @@ public class UserController {
     }
 
     //TODO: possibly wont be needed, take user info from principal
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     @PreAuthorize("hasRole('ADMIN') || principal.id == #id")
     public User getUser(@PathVariable("id") Long id) {
         return userService.getUser(id);

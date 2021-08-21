@@ -52,7 +52,7 @@ public class ToDoController {
             @ApiResponse(code = 401, message = "Unauthorized")
     })
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     public List<ToDoResponse> getAllUserToDo(@PathVariable("id") Long id){
         return toDoService.getToDoList(id);
     }

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -18,9 +19,7 @@ import java.util.Set;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
     private final RoleRepository roleRepository;
-
     private final PasswordEncoder encoder;
 
     @Autowired
@@ -39,6 +38,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", id.toString()));
     }
 
+    @Transactional
     public User createUser(User user) {
         if (userRepository.findUserByUsername(user.getUsername()).isPresent()) {
             throw new FieldExistsException("This username already exists: ", user.getUsername());
