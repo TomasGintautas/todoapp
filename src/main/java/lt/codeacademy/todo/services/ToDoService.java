@@ -31,31 +31,26 @@ public class ToDoService {
     }
 
     @Transactional
-    public List<ToDoResponse> getToDoList(Long userId) {
-        return toDoRepository.getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
-                .stream()
-                .map(todo -> new ToDoResponse(todo))
-                .collect(Collectors.toList());
+    public List<ToDo> getToDoList(Long userId) {
+        return toDoRepository.getAllByOwner(userRepository.getById(userId)).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()));
     }
 
     @Transactional
-    public List<ToDoResponse> getToDoListBySignificance(Long userId, String significance) {
+    public List<ToDo> getToDoListBySignificance(Long userId, String significance) {
         return toDoRepository
-                .getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
+                .getAllByOwner(userRepository.getById(userId)).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
                 .stream()
                 .filter(toDo -> toDo.getSignificance().getName().equals(significance))
-                .map(ToDoResponse::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<ToDoResponse> getToDoListByDateToday(Long userId) {
+    public List<ToDo> getToDoListByDateToday(Long userId) {
         LocalDate dateToday = LocalDate.now();
         return toDoRepository
-                .getAllByOwner(userId).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
+                .getAllByOwner(userRepository.getById(userId)).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
                 .stream()
                 .filter(toDoToday -> toDoToday.getDeadline().toString().substring(0, 10).replace(" ", "-").equals(dateToday.toString()))
-                .map(ToDoResponse::new)
                 .collect(Collectors.toList());
     }
 
@@ -87,9 +82,9 @@ public class ToDoService {
     }
 
     @Transactional
-    public void deleteOldToDo(Long id) {
+    public void deleteOldToDo(Long userId) {
         toDoRepository
-                .getAllByOwner(id).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", id.toString()))
+                .getAllByOwner(userRepository.getById(userId)).orElseThrow(() -> new FieldNotFoundException("User not found by given ID: ", userId.toString()))
                 .stream()
                 .filter(removable -> removable.getDeadline().isBefore(LocalDateTime.now()))
                 .forEach(removable -> toDoRepository.deleteById(removable.getId()));

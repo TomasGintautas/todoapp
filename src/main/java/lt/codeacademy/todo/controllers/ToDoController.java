@@ -3,17 +3,20 @@ package lt.codeacademy.todo.controllers;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lt.codeacademy.todo.entities.dto.ToDoDTO;
 import lt.codeacademy.todo.entities.dto.requests.ToDoRequest;
 import lt.codeacademy.todo.entities.dto.responses.ToDoResponse;
 import lt.codeacademy.todo.services.ToDoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/workspace")
 public class ToDoController {
@@ -29,7 +32,7 @@ public class ToDoController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     public ToDoResponse createToDo(@Valid @RequestBody ToDoRequest toDoRequest){
         return toDoService.createToDo(toDoRequest);
     }
@@ -40,7 +43,7 @@ public class ToDoController {
             @ApiResponse(code = 400, message = "Validation failed"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     @PutMapping("/{id}")
     public ToDoResponse updateToDo(@PathVariable("id") Long id,@Valid @RequestBody ToDoRequest toDoRequest){
         return toDoService.updateToDo(toDoRequest, id);
@@ -51,10 +54,10 @@ public class ToDoController {
             @ApiResponse(code = 200, message = "Successfully get list of to-dos"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @GetMapping
+    @GetMapping("/{id}/todo")
 //    @PreAuthorize("hasRole('USER')")
-    public List<ToDoResponse> getAllUserToDo(@PathVariable("id") Long id){
-        return toDoService.getToDoList(id);
+    public List<ToDoDTO> getAllUserToDo(@PathVariable("id") Long id){
+        return toDoService.getToDoList(id).stream().map(ToDoDTO::new).collect(Collectors.toList());
     }
 
     @ApiOperation(value = "Get all to do today", tags = "getToDoToday", httpMethod = "GET")
@@ -63,9 +66,9 @@ public class ToDoController {
             @ApiResponse(code = 401, message = "Unauthorized")
     })
     @GetMapping("/today")
-    @PreAuthorize("hasRole('USER')")
-    public List<ToDoResponse> getToDoToday(@PathVariable("id") Long id){
-        return toDoService.getToDoListByDateToday(id);
+//    @PreAuthorize("hasRole('USER')")
+    public List<ToDoDTO> getToDoToday(@PathVariable("id") Long id){
+        return toDoService.getToDoListByDateToday(id).stream().map(ToDoDTO::new).collect(Collectors.toList());
     }
 
     @ApiOperation(value = "Get all to do by significance", tags = "getToDoBySignificance", httpMethod = "GET")
@@ -74,9 +77,9 @@ public class ToDoController {
             @ApiResponse(code = 401, message = "Unauthorized")
     })
     @GetMapping("/{significance}")
-    @PreAuthorize("hasRole('USER')")
-    public List<ToDoResponse> getToDoBySignificance(@PathVariable("significance") String significance, @PathVariable("id") Long id){
-        return toDoService.getToDoListBySignificance(id, significance);
+//    @PreAuthorize("hasRole('USER')")
+    public List<ToDoDTO> getToDoBySignificance(@PathVariable("significance") String significance, @PathVariable("id") Long id){
+        return toDoService.getToDoListBySignificance(id, significance).stream().map(ToDoDTO::new).collect(Collectors.toList());
     }
 
     @ApiOperation(value = "Delete todo by id", tags = "getToDo", httpMethod = "DELETE")
@@ -87,7 +90,7 @@ public class ToDoController {
     })
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     public void deleteToDo(@PathVariable("id") Long id){
         toDoService.deleteToDo(id);
     }
@@ -100,7 +103,7 @@ public class ToDoController {
     })
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     public void deleteOldToDo(@PathVariable("id") Long id){
         toDoService.deleteOldToDo(id);
     }
