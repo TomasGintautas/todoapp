@@ -16,7 +16,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin
 @RestController
 @RequestMapping(value = "/workspace")
 public class ToDoController {
@@ -90,7 +89,7 @@ public class ToDoController {
     })
     @DeleteMapping("/{id}/todo/{toDoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     public void deleteToDo(@PathVariable("id") Long id, @PathVariable("toDoId") Long toDoId){
         toDoService.deleteToDo(toDoId);
     }
@@ -106,5 +105,10 @@ public class ToDoController {
     @PreAuthorize("hasRole('USER')")
     public void deleteOldToDo(@PathVariable("id") Long id){
         toDoService.deleteOldToDo(id);
+    }
+
+    @GetMapping("/{id}/todo/{toDoId}")
+    public ToDoDTO getToDO(@PathVariable("id") Long id, @PathVariable("toDoId") Long toDoId){
+        return new ToDoDTO(toDoService.getToDo(toDoId));
     }
 }

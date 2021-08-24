@@ -90,4 +90,8 @@ public class ToDoService {
                 .forEach(removable -> toDoRepository.deleteById(removable.getId()));
     }
 
+    @Transactional
+    public ToDo getToDo(Long toDoId){
+        return toDoRepository.getById(toDoId);
+    }
 }

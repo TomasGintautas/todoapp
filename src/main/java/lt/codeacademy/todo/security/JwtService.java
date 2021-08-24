@@ -31,12 +31,11 @@ public class JwtService {
 
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
-                .setIssuer("car-api")
-                .setAudience("car-ui")
+                .setIssuer("todo-api")
+                .setAudience("todo-ui")
                 .setSubject(user.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + validityMin * 60000))
-                // "roles": ["ROLE_ADMIN", "ROLE_USER"]
                 .claim("roles", user.getRoles().stream().map(Role::getAuthority).collect(toSet()))
                 .signWith(Keys.hmacShaKeyFor(secret), SignatureAlgorithm.HS512)
                 .compact();

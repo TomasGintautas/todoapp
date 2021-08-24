@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@CrossOrigin
 @RestController
 @RequestMapping
 public class UserController {
@@ -27,7 +26,7 @@ public class UserController {
 
     @PostMapping("/login")
     public LoginResponse login(@AuthenticationPrincipal User user) {
-        return new LoginResponse(jwtService.createToken(user));
+        return new LoginResponse(user, jwtService.createToken(user));
     }
 
     @PostMapping("/register")

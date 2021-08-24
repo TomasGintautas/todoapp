@@ -17,7 +17,7 @@ public class ToDoResponse {
 
     private String toDoText;
 
-    private String significance;
+    private Long significanceId;
 
     @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
     private LocalDateTime deadline;
@@ -26,7 +26,7 @@ public class ToDoResponse {
         this.id = toDo.getId();
         this.ownerId = toDo.getOwner().getId();
         this.toDoText = toDo.getToDoText();
-        this.significance = toDo.getSignificance().getName();
+        this.significanceId = toDo.getSignificance().getId();
         this.deadline = toDo.getDeadline() ;
     }
 }

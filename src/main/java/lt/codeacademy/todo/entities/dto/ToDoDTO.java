@@ -15,7 +15,7 @@ public class ToDoDTO {
 
     private Long ownerId;
 
-    private String significance;
+    private Long significanceId;
 
     private String toDoText;
 
@@ -31,7 +31,7 @@ public class ToDoDTO {
     public ToDoDTO(ToDo toDo) {
         this.id = toDo.getId();
         this.ownerId = toDo.getOwner().getId();
-        this.significance = toDo.getSignificance().getName();
+        this.significanceId = toDo.getSignificance().getId();
         this.toDoText = toDo.getToDoText();
         this.deadline = toDo.getDeadline();
         this.created = toDo.getCreated();
