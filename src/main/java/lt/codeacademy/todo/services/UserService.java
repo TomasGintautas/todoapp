@@ -8,9 +8,9 @@ import lt.codeacademy.todo.exceptions.FieldNotFoundException;
 import lt.codeacademy.todo.repositories.RoleRepository;
 import lt.codeacademy.todo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UserDetailsService;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,17 +19,16 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-//public class UserService implements UserDetailsService {
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-//    private final PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-//        this.encoder = encoder;
+        this.encoder = encoder;
     }
 
     public List<User> getUsers() {
@@ -76,8 +75,8 @@ public class UserService {
         return new UserUpdateResponse(user);
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws FieldNotFoundException {
-//        return userRepository.findUserByUsername(username).orElseThrow(() -> new FieldNotFoundException("User not found: ", username));
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws FieldNotFoundException {
+        return userRepository.findUserByUsername(username).orElseThrow(() -> new FieldNotFoundException("User not found: ", username));
+    }
 }

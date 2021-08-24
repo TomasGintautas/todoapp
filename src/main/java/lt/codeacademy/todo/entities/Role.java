@@ -1,6 +1,7 @@
 package lt.codeacademy.todo.entities;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -11,8 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "role")
-//public class Role implements GrantedAuthority {
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
     @Column(name = "id")
@@ -22,8 +22,8 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-//    @Override
-//    public String getAuthority() {
-//        return "ROLE_" + name;
-//    }
+    @Override
+    public String getAuthority() {
+        return "ROLE_" + name;
+    }
 }

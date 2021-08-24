@@ -30,10 +30,10 @@ public class ToDoController {
             @ApiResponse(code = 400, message = "Validation failed"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @PostMapping
+    @PostMapping("/{id}/todo")
     @ResponseStatus(HttpStatus.CREATED)
 //    @PreAuthorize("hasRole('USER')")
-    public ToDoResponse createToDo(@Valid @RequestBody ToDoRequest toDoRequest){
+    public ToDoResponse createToDo(@Valid @RequestBody ToDoRequest toDoRequest,@PathVariable("id") Long id){
         return toDoService.createToDo(toDoRequest);
     }
 
@@ -44,9 +44,9 @@ public class ToDoController {
             @ApiResponse(code = 401, message = "Unauthorized")
     })
 //    @PreAuthorize("hasRole('USER')")
-    @PutMapping("/{id}")
-    public ToDoResponse updateToDo(@PathVariable("id") Long id,@Valid @RequestBody ToDoRequest toDoRequest){
-        return toDoService.updateToDo(toDoRequest, id);
+    @PutMapping("/{id}/todo/{toDoId}")
+    public ToDoResponse updateToDo(@PathVariable("id") Long id,@Valid @RequestBody ToDoRequest toDoRequest, @PathVariable("toDoId") Long toDoId){
+        return toDoService.updateToDo(toDoRequest, toDoId);
     }
 
     @ApiOperation(value = "Get all to-dos", tags = "getToDoList", httpMethod = "GET")
@@ -65,7 +65,7 @@ public class ToDoController {
             @ApiResponse(code = 200, message = "Successfully get list of to-dos today"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @GetMapping("/today")
+    @GetMapping("/{id}/today")
 //    @PreAuthorize("hasRole('USER')")
     public List<ToDoDTO> getToDoToday(@PathVariable("id") Long id){
         return toDoService.getToDoListByDateToday(id).stream().map(ToDoDTO::new).collect(Collectors.toList());
@@ -76,7 +76,7 @@ public class ToDoController {
             @ApiResponse(code = 200, message = "Successfully get list of to-dos by required significance"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @GetMapping("/{significance}")
+    @GetMapping("/{id}/{significance}")
 //    @PreAuthorize("hasRole('USER')")
     public List<ToDoDTO> getToDoBySignificance(@PathVariable("significance") String significance, @PathVariable("id") Long id){
         return toDoService.getToDoListBySignificance(id, significance).stream().map(ToDoDTO::new).collect(Collectors.toList());
@@ -88,11 +88,11 @@ public class ToDoController {
             @ApiResponse(code = 404, message = "ToDo not found error"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/todo/{toDoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
 //    @PreAuthorize("hasRole('USER')")
-    public void deleteToDo(@PathVariable("id") Long id){
-        toDoService.deleteToDo(id);
+    public void deleteToDo(@PathVariable("id") Long id, @PathVariable("toDoId") Long toDoId){
+        toDoService.deleteToDo(toDoId);
     }
 
     @ApiOperation(value = "Delete todos past deadline", tags = "getToDo", httpMethod = "DELETE")
@@ -101,7 +101,7 @@ public class ToDoController {
             @ApiResponse(code = 404, message = "ToDos not found error"),
             @ApiResponse(code = 401, message = "Unauthorized")
     })
-    @DeleteMapping
+    @DeleteMapping("/{id}/todo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
 //    @PreAuthorize("hasRole('USER')")
     public void deleteOldToDo(@PathVariable("id") Long id){

@@ -1,9 +1,7 @@
 package lt.codeacademy.todo.controllers;
 
 import lt.codeacademy.todo.entities.dto.UserDTO;
-import lt.codeacademy.todo.entities.dto.requests.ToDoRequest;
 import lt.codeacademy.todo.entities.dto.requests.UserUpdateRequest;
-import lt.codeacademy.todo.entities.dto.responses.ToDoResponse;
 import lt.codeacademy.todo.entities.dto.responses.UserUpdateResponse;
 import lt.codeacademy.todo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,7 @@ public class AdminPanelController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/view/{id}")
+    @GetMapping("/edit/{id}")
 //    @PreAuthorize("hasRole('ADMIN'))
     public UserDTO getUser(@PathVariable("id") Long id) {
         return new UserDTO(userService.getUser(id));
@@ -34,7 +32,7 @@ public class AdminPanelController {
         return userService.getUsers().stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
-    @DeleteMapping
+    @DeleteMapping("/view/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     //    @PreAuthorize("hasRole('ADMIN'))
     public void deleteUser(@PathVariable("id") Long id){
