@@ -6,6 +6,7 @@ import lt.codeacademy.todo.entities.dto.responses.UserUpdateResponse;
 import lt.codeacademy.todo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,26 +22,26 @@ public class AdminPanelController {
     private UserService userService;
 
     @GetMapping("/edit/{id}")
-//    @PreAuthorize("hasRole('ADMIN'))
+    @PreAuthorize("hasRole('ADMIN')")
     public UserDTO getUser(@PathVariable("id") Long id) {
         return new UserDTO(userService.getUser(id));
     }
 
     @GetMapping("/view")
-    //    @PreAuthorize("hasRole('ADMIN'))
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDTO> getAllUsers() {
         return userService.getUsers().stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
     @DeleteMapping("/view/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    //    @PreAuthorize("hasRole('ADMIN'))
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(@PathVariable("id") Long id){
         userService.deleteUser(id);
     }
 
     @PutMapping("/edit/{id}")
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserUpdateResponse updateUser(@PathVariable("id") Long id, @Valid @RequestBody UserUpdateRequest UserUpdateRequest){
         return userService.updateUser(UserUpdateRequest, id);
     }
