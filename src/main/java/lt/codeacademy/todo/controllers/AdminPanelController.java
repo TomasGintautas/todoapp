@@ -46,7 +46,6 @@ public class AdminPanelController {
         return userService.getUsers().stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
-
     @ApiOperation(value = "Delete user by id", tags = "deleteUser", httpMethod = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Successfully delete user by id"),
