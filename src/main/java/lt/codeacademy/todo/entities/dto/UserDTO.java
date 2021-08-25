@@ -35,4 +35,7 @@ public class UserDTO {
         this.created = user.getCreated().toString();
         this.updated = user.getUpdated().toString();
     }
+
+    public UserDTO() {
+    }
 }
