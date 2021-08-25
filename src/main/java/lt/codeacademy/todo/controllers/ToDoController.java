@@ -82,7 +82,7 @@ public class ToDoController {
         return toDoService.getToDoListBySignificance(id, significance).stream().map(ToDoDTO::new).collect(Collectors.toList());
     }
 
-    @ApiOperation(value = "Delete todo by id", tags = "getToDo", httpMethod = "DELETE")
+    @ApiOperation(value = "Delete todo by id", tags = "deleteToDo", httpMethod = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Successfully delete todo by id"),
             @ApiResponse(code = 404, message = "ToDo not found error"),
@@ -108,6 +108,11 @@ public class ToDoController {
         toDoService.deleteOldToDo(id);
     }
 
+    @ApiOperation(value = "Get todo", tags = "getToDo", httpMethod = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully get one todo"),
+            @ApiResponse(code = 401, message = "Unauthorized")
+    })
     @GetMapping("/{id}/todo/{toDoId}")
     public ToDoDTO getToDO(@PathVariable("id") Long id, @PathVariable("toDoId") Long toDoId){
         return new ToDoDTO(toDoService.getToDo(toDoId));
