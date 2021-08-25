@@ -1,5 +1,6 @@
 package lt.codeacademy.todo.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/workspace")
+@Api(tags = "ToDoController")
 public class ToDoController {
 
     @Autowired
