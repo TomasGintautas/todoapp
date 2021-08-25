@@ -90,7 +90,7 @@ public class ToDoController {
     })
     @DeleteMapping("/{id}/todo/{toDoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    //@PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     public void deleteToDo(@PathVariable("id") Long id, @PathVariable("toDoId") Long toDoId){
         toDoService.deleteToDo(toDoId);
     }

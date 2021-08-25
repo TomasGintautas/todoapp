@@ -57,7 +57,7 @@ public class AdminPanelControllerTest {
 
         List<UserDTO> userDTOList = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<UserDTO>>(){});
 
-        assertEquals(5, userDTOList.size());
+        assertEquals(4, userDTOList.size());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class AdminPanelControllerTest {
         userUpdateRequest.setAge(20);
 
         MvcResult mvcResult =
-                 mockMvc.perform(MockMvcRequestBuilders.put("/admin/panel/edit/{id}", 20L)
+                 mockMvc.perform(MockMvcRequestBuilders.put("/admin/panel/edit/{id}", 21L)
                         .content(objectMapper.writeValueAsString(userUpdateRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(MockMvcResultMatchers.status().isOk())
